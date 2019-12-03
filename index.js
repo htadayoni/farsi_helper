@@ -66,6 +66,59 @@ var farsi_helper = {
         return arr.join('');
     },
 
+    persianNumbersToEnglish: function(number) {
+        let str;
+        let arr;
+
+        if (!number && number !== 0) {
+            return '';
+        }
+
+        str = number.toString();
+        arr = str.split('');
+
+        for (let i = 0; i < arr.length; i++) {
+            const char = arr[i];
+            if (char in toEnMap) {
+                arr[i] = toEnMap[char];
+            }
+        }
+
+        return arr.join('');
+    },
+
+    isNotEnglish: function(number) {
+        return !/[a-z]/i.test(number);
+    },
+
+    isStartedWithEnglish: function(value) {
+        return /^\w+|^[a-zA-z]/.test(value);
+    },
+
+    isEnglish: function(val) {
+        const regex = /^([a-z]|[A-Z]|[0-9]|\s|@|#|\$|\(|\)|<|\.|\-|_|\||~|\/|\\|\*)+$/;
+        return regex.test(val);
+    },
+
+    arabicCharsToPersian: function(value) {
+        let arr;
+
+        if (!value) {
+            return;
+        }
+
+        arr = value.toString().split('');
+
+        for (let i = 0, len = arr.length; i < len; i++) {
+            const char = arr[i];
+            if (arabicCharsToFarsiMap[char]) {
+                arr[i] = arabicCharsToFarsiMap[char];
+            }
+        }
+
+        return arr.join('');
+    },
+
     arabicNumbersToPersian: function(value) {
         let arr;
 
@@ -83,6 +136,27 @@ var farsi_helper = {
         }
 
         return arr.join('');
+    },
+
+    persianMatcher: function(term, text) {
+        let persian = term || '';
+        const english = term || '';
+
+        let textFarsi = this.arabicCharsToPersian(text);
+        textFarsi = this.arabicNumbersToPersian(textFarsi);
+
+        persian = this.convertToPersianNumbers(persian);
+        persian = this.arabicCharsToPersian(persian);
+        persian = this.arabicNumbersToPersian(persian);
+
+        if (
+            textFarsi.indexOf(persian) > -1 ||
+            textFarsi.toLowerCase().indexOf(english.toLowerCase()) > -1
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
 

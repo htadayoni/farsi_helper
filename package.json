@@ -1,7 +1,7 @@
 {
     "name": "farsi_helper",
-    "version": "0.0.1",
-    "description": "Helps to developers for manage farsi methods",
+    "version": "0.5.0",
+    "description": "Helps to developers for managing farsi/persian applications",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
